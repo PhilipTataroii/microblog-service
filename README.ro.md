@@ -1,12 +1,14 @@
 # MicroBlog Service
 
-🇬🇧 [English](README.md) | 🇷🇴 **Română**
+🌐 **Limbi disponibile pentru documentație**
 
-### Prezentare generală
+🇬🇧 [English](README.md) | 🇷🇺 [Русский](README.ru.md) | 🇷🇴 **Română**
 
-MicroBlog este o aplicație de microblogging bazată pe o arhitectură RESTful API, dezvoltată ca proiect final în cadrul programului de formare profesională Python Advanced.
+## Prezentare generală
 
-Aplicația permite utilizatorilor să creeze și să șteargă postări, să încarce imagini, să aprecieze postările altor utilizatori, să urmărească alți utilizatori și să exploreze un flux personalizat de postări.
+MicroBlog este o aplicație de microblogging bazată pe un API RESTful, dezvoltată ca proiect final în cadrul programului de formare profesională Python Advanced.
+
+Aplicația permite utilizatorilor să creeze și să șteargă postări, să încarce imagini, să aprecieze postările, să urmărească alți utilizatori și să exploreze un flux personalizat de postări.
 
 Proiectul demonstrează competențe practice în dezvoltarea backend, proiectarea API-urilor REST, gestionarea bazelor de date, containerizarea aplicațiilor și testarea automată.
 
@@ -21,13 +23,13 @@ Proiectul demonstrează competențe practice în dezvoltarea backend, proiectare
 - Sortarea postărilor în funcție de popularitate
 - Autentificarea utilizatorilor prin antetul HTTP `api-key`
 - Explorarea documentației interactive API prin Swagger
-- Rularea și implementarea aplicației utilizând Docker Compose
+- Rularea aplicației utilizând Docker Compose
 
 ## Tehnologii utilizate
 
 - **Backend:** Python, Flask
 - **Bază de date:** PostgreSQL, SQLAlchemy
-- **Migrarea bazei de date:** Flask-Migrate, Alembic
+- **Migrații ale bazei de date:** Flask-Migrate, Alembic
 - **Documentație API:** Flasgger, Swagger
 - **Testare:** Pytest
 - **Calitatea codului:** Flake8
@@ -39,7 +41,7 @@ Proiectul demonstrează competențe practice în dezvoltarea backend, proiectare
 
 Asigurați-vă că Docker și Docker Compose sunt instalate pe sistem.
 
-### Instalare și implementare
+### Instalare și rulare
 
 Clonați repository-ul:
 
@@ -60,7 +62,7 @@ Verificați starea containerelor:
 docker compose ps
 ```
 
-După pornirea aplicației, aceasta va fi disponibilă la adresa:
+După pornire, aplicația este disponibilă la adresa:
 
 `http://127.0.0.1:5000/`
 
@@ -159,6 +161,7 @@ microblog-service/
 ├── run.py
 ├── swagger.yml
 ├── README.md
+├── README.ru.md
 └── README.ro.md
 ```
 
