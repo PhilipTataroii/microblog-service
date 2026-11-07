@@ -1,0 +1,63 @@
+# описываю контейнеры моего проекта
+services:
+
+  # контейнер PostgreSQL
+  db:
+    # использую PostgreSQL 18
+    image: postgres:18
+
+    # задаю данные для моей базы
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: microblog
+
+    # сохраняю данные PostgreSQL между перезапусками
+    # для PostgreSQL 18 использую /var/lib/postgresql
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+    # проверяю, что база уже готова принимать подключения
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d microblog"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # контейнер моего Flask-приложения
+  app:
+    # собираю приложение из моего Dockerfile
+    build: .
+
+    # подключаю Flask к PostgreSQL внутри Docker
+    # вместо localhost использую имя контейнера db
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/microblog
+
+    # запускаю приложение только после готовности PostgreSQL
+    depends_on:
+      db:
+        condition: service_healthy
+
+    # открываю порт Flask на моём компьютере
+    ports:
+      - "5000:5000"
+
+    # сначала применяю миграции,
+    # после этого запускаю приложение
+    command: >
+      sh -c "flask db upgrade &&
+             python run.py"
+
+    # сохраняю загруженные пользователями изображения
+    volumes:
+      - uploads_data:/app/uploads
+
+
+# создаю постоянные хранилища Docker
+volumes:
+  # здесь хранятся данные PostgreSQL
+  postgres_data:
+
+  # здесь хранятся загруженные изображения
+  uploads_data:

@@ -1,0 +1,222 @@
+# указываю версию Swagger
+swagger: "2.0"
+
+# основная информация о моём API
+info:
+  title: MicroBlog API
+  description: API сервиса микроблогов
+  version: "1.0.0"
+
+# указываю, что API работает через HTTP
+schemes:
+  - http
+
+# все маршруты начинаются от корня сайта
+basePath: /
+
+# описываю api-key, который передаю в заголовке
+securityDefinitions:
+  ApiKeyAuth:
+    type: apiKey
+    name: api-key
+    in: header
+
+paths:
+
+  # работа с текущим пользователем
+  /api/users/me:
+    get:
+      tags:
+        - Users
+      summary: Получить текущего пользователя
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: Данные пользователя
+        401:
+          description: Неверный или отсутствующий api-key
+
+  # просмотр другого пользователя
+  /api/users/{user_id}:
+    get:
+      tags:
+        - Users
+      summary: Получить пользователя по id
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Данные пользователя
+        404:
+          description: Пользователь не найден
+
+  # работа с лентой и созданием твитов
+  /api/tweets:
+    get:
+      tags:
+        - Tweets
+      summary: Получить ленту твитов
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: Список твитов
+        401:
+          description: Неверный или отсутствующий api-key
+
+    post:
+      tags:
+        - Tweets
+      summary: Создать новый твит
+      security:
+        - ApiKeyAuth: []
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - tweet_data
+            properties:
+              tweet_data:
+                type: string
+                example: Мой новый твит
+              tweet_media_ids:
+                type: array
+                items:
+                  type: integer
+                example: []
+      responses:
+        201:
+          description: Твит успешно создан
+        400:
+          description: Неверные данные
+        401:
+          description: Неверный или отсутствующий api-key
+
+  # удаление конкретного твита
+  /api/tweets/{tweet_id}:
+    delete:
+      tags:
+        - Tweets
+      summary: Удалить твит
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: tweet_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Твит успешно удалён
+        403:
+          description: Нельзя удалить чужой твит
+        404:
+          description: Твит не найден
+
+  # загрузка изображения
+  /api/medias:
+    post:
+      tags:
+        - Media
+      summary: Загрузить изображение
+      security:
+        - ApiKeyAuth: []
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: file
+          in: formData
+          required: true
+          type: file
+      responses:
+        201:
+          description: Изображение успешно загружено
+        400:
+          description: Файл не передан
+        401:
+          description: Неверный или отсутствующий api-key
+
+  # добавление и удаление лайка
+  /api/tweets/{tweet_id}/likes:
+    post:
+      tags:
+        - Likes
+      summary: Поставить лайк
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: tweet_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Лайк добавлен
+        404:
+          description: Твит не найден
+
+    delete:
+      tags:
+        - Likes
+      summary: Удалить лайк
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: tweet_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Лайк удалён
+        404:
+          description: Твит не найден
+
+  # подписка и отписка от пользователя
+  /api/users/{user_id}/follow:
+    post:
+      tags:
+        - Follows
+      summary: Подписаться на пользователя
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Подписка создана
+        400:
+          description: Нельзя подписаться на самого себя
+        404:
+          description: Пользователь не найден
+
+    delete:
+      tags:
+        - Follows
+      summary: Отписаться от пользователя
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Подписка удалена
+        404:
+          description: Пользователь не найден

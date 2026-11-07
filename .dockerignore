@@ -1,0 +1,18 @@
+# не копирую виртуальное окружение в Docker
+.venv/
+
+# не копирую Git
+.git/
+.gitignore
+
+# не копирую секретные локальные настройки
+.env
+
+# не копирую кэш Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# не копирую отчёты тестов
+.coverage
+htmlcov/
