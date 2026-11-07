@@ -1,184 +1,150 @@
 # MicroBlog Service
 
-Итоговый проект курса Python Advanced.
+🌐 **Documentation Languages**
 
-MicroBlog — сервис микроблогов, в котором пользователи могут создавать и удалять твиты, прикреплять изображения, ставить лайки и подписываться на других пользователей.
+🇬🇧 **English** | 🇷🇺 [Русский](README.ru.md) | 🇷🇴 [Română](README.ro.md)
 
-## Возможности проекта
+## Overview
 
-- создание твитов;
-- удаление своих твитов;
-- загрузка изображений;
-- добавление изображений к твитам;
-- лайки и удаление лайков;
-- подписка и отписка от пользователей;
-- просмотр профиля пользователя;
-- просмотр ленты твитов;
-- сортировка ленты по популярности;
-- авторизация через заголовок `api-key`;
-- Swagger-документация API;
-- запуск приложения через Docker Compose.
+MicroBlog is a RESTful microblogging application developed as the final project of the Python Advanced professional training program.
 
-## Используемые технологии
+The application allows users to create and delete tweets, upload images, like posts, follow other users, and explore a personalized tweet feed.
 
-- Python
-- Flask
-- SQLAlchemy
-- PostgreSQL
-- Flask-Migrate
-- Alembic
-- Flasgger / Swagger
-- Pytest
-- Flake8
-- Docker
-- Docker Compose
+The project demonstrates practical backend development skills, REST API design, database management, containerization, and automated testing.
 
-## Запуск через Docker
+## Features
 
-Для запуска проекта должны быть установлены Docker и Docker Compose.
+- Create and delete tweets
+- Upload images and attach them to tweets
+- Like and unlike tweets
+- Follow and unfollow users
+- View user profiles
+- Browse the tweet feed
+- Sort tweets by popularity
+- Authenticate users using an `api-key` HTTP header
+- Explore interactive API documentation with Swagger
+- Run the application using Docker Compose
 
-Собрать и запустить приложение:
+## Technologies
+
+- **Backend:** Python, Flask
+- **Database:** PostgreSQL, SQLAlchemy
+- **Database Migrations:** Flask-Migrate, Alembic
+- **API Documentation:** Flasgger, Swagger
+- **Testing:** Pytest
+- **Code Quality:** Flake8
+- **Containerization:** Docker, Docker Compose
+
+## Getting Started
+
+### Prerequisites
+
+Make sure Docker and Docker Compose are installed.
+
+### Installation and Deployment
+
+Clone the repository:
+
+```bash
+git clone https://github.com/PhilipTataroii/microblog-service.git
+cd microblog-service
+```
+
+Build and start the application:
 
 ```bash
 docker compose up -d --build
 ```
 
-Проверить состояние контейнеров:
+Check the container status:
 
 ```bash
 docker compose ps
 ```
 
-После запуска приложение доступно по адресу:
+Once the application is running, open:
 
-```text
-http://127.0.0.1:5000/
-```
+`http://127.0.0.1:5000/`
 
-Остановить приложение:
+Stop the application:
 
 ```bash
 docker compose down
 ```
 
-## База данных
+## Database
 
-В проекте используется PostgreSQL.
+MicroBlog uses PostgreSQL as its relational database.
 
-При запуске через Docker база данных запускается в отдельном контейнере.
+When running through Docker Compose, PostgreSQL operates in a separate container.
 
-Миграции применяются автоматически перед запуском Flask-приложения:
+Database migrations are automatically applied before starting the Flask application using:
 
 ```bash
 flask db upgrade
 ```
 
-## Авторизация
+## Authentication
 
-Для определения пользователя используется HTTP-заголовок:
+The application identifies users through the HTTP `api-key` header.
 
-```text
-api-key
-```
+Example:
 
-Пример:
-
-```text
+```http
 api-key: test
 ```
 
-Пользователь с таким ключом должен существовать в базе данных.
+The corresponding user must exist in the database.
 
-## Основные API-маршруты
+## REST API Endpoints
 
-Получение текущего пользователя:
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/users/me` | Get the current user |
+| GET | `/api/users/<user_id>` | Get a user by ID |
+| GET | `/api/tweets` | Retrieve the tweet feed |
+| POST | `/api/tweets` | Create a tweet |
+| DELETE | `/api/tweets/<tweet_id>` | Delete a tweet |
+| POST | `/api/medias` | Upload an image |
+| POST | `/api/tweets/<tweet_id>/likes` | Like a tweet |
+| DELETE | `/api/tweets/<tweet_id>/likes` | Remove a like |
+| POST | `/api/users/<user_id>/follow` | Follow a user |
+| DELETE | `/api/users/<user_id>/follow` | Unfollow a user |
 
-```text
-GET /api/users/me
-```
+## Swagger API Documentation
 
-Получение пользователя по ID:
+Interactive API documentation is available at:
 
-```text
-GET /api/users/<user_id>
-```
+`http://127.0.0.1:5000/apidocs/`
 
-Получение ленты твитов:
+Swagger provides information about available endpoints, request parameters, and API operations.
 
-```text
-GET /api/tweets
-```
+## Testing
 
-Создание твита:
-
-```text
-POST /api/tweets
-```
-
-Удаление твита:
-
-```text
-DELETE /api/tweets/<tweet_id>
-```
-
-Загрузка изображения:
-
-```text
-POST /api/medias
-```
-
-Поставить или удалить лайк:
-
-```text
-POST /api/tweets/<tweet_id>/likes
-DELETE /api/tweets/<tweet_id>/likes
-```
-
-Подписаться или отписаться от пользователя:
-
-```text
-POST /api/users/<user_id>/follow
-DELETE /api/users/<user_id>/follow
-```
-
-## Swagger
-
-После запуска приложения интерактивная документация API доступна по адресу:
-
-```text
-http://127.0.0.1:5000/apidocs/
-```
-
-Через Swagger можно посмотреть доступные API-маршруты и их параметры.
-
-## Тестирование
-
-Запустить все тесты:
+Run the automated test suite:
 
 ```bash
 pytest -v
 ```
 
-На момент завершения проекта:
+Test results at project completion:
 
-```text
-12 passed
-```
+**12 tests passed.**
 
-## Проверка кода
+## Code Quality
 
-Для проверки проекта с помощью Flake8:
+Run Flake8 to check code quality:
 
 ```bash
 flake8 app tests run.py config.py
 ```
 
-При успешной проверке команда завершается без ошибок.
+A successful execution completes without reporting errors.
 
-## Структура проекта
+## Project Structure
 
 ```text
-microblog_service/
+microblog-service/
 ├── app/
 │   ├── __init__.py
 │   ├── models.py
@@ -194,9 +160,19 @@ microblog_service/
 ├── requirements.txt
 ├── run.py
 ├── swagger.yml
-└── README.md
+├── README.md
+├── README.ru.md
+└── README.ro.md
 ```
 
-## Автор
+## Author
 
-Filip Tataroi
+**Filip Tataroi**
+
+Python Backend Developer
+
+GitHub: https://github.com/PhilipTataroii
+
+LinkedIn: https://www.linkedin.com/in/filip-tataroi/
+
+**Project Type:** Python Advanced — Final Educational Project
